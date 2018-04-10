@@ -936,14 +936,15 @@ describe('Prerequsites', () => {
 
 describe('Purchase', () => {
   // create a purchase.
-  it('can create a purchase', done => {
+  let data
+  before(() => {
     const accountCode = uuid.v4()
 
     const subscription1 = {
       plan_code: config.plan_code
     }
 
-    const data = {
+    data = {
       currency: 'USD',
       subscriptions: [subscription1],
       account: {
@@ -962,7 +963,17 @@ describe('Purchase', () => {
         }
       }
     }
+  })
 
+  it('can create a preview', done => {
+    recurly.Purchase().preview(data, (err, newPreview) => {
+      demand(err).not.exist()
+      newPreview.must.be.an.object()
+      done()
+    })
+  })
+
+  it('can create a purchase', done => {
     recurly.Purchase().create(data, (err, newPurchase) => {
       demand(err).not.exist()
       newPurchase.must.be.an.object()
