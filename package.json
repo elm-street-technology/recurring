@@ -1,7 +1,7 @@
 {
   "name": "@elm-street-technology/recurring",
   "description": "a recurly v2 api client for node.js",
-  "version": "2.8.0",
+  "version": "2.8.1",
   "bugs": "https://github.com/elm-street-technology/recurring/issues",
   "contributors": [
     "Matt Lorey <mattlorey@gmail.com>",
