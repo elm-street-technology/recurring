@@ -946,7 +946,7 @@ describe('Purchase', () => {
 
     data = {
       currency: 'USD',
-      subscriptions: [subscription1],
+      subscriptions: [{ subscription: subscription1 }],
       account: {
         account_code: accountCode,
         billing_info: {
