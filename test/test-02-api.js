@@ -654,7 +654,7 @@ describe('Invoices', () => {
 
   describe('refunds', () => {
     before(function(done) {
-      recurly.Invoice().all({state: 'collected'}, (err, invoices) => {
+      recurly.Invoice().all({state: 'paid'}, (err, invoices) => {
         demand(err).not.exist()
         this.invoices = invoices
         done()
@@ -742,9 +742,9 @@ describe('Invoices', () => {
           if (err) return done(err)
 
           // create an invoice with the pending charges
-          account.createInvoice((err, invoice) => {
+          account.createInvoice((err, invoices) => {
             if (err) return done(err)
-            this.invoiceToMarkAsFailed = invoice
+            this.invoiceToMarkAsFailed = invoices.charge_invoice
             done()
           })
         })
@@ -757,7 +757,7 @@ describe('Invoices', () => {
 
       invoice.markFailed(err => {
         demand(err).not.exist()
-        invoice.state.must.equal('failed')
+        invoice.charge_invoice.state.must.equal('failed')
         done()
       })
     })
