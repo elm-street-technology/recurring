@@ -1,8 +1,8 @@
 {
-  "name": "@elm-street-technology/recurring",
+  "name": "@pguelpa/recurring",
   "description": "a recurly v2 api client for node.js",
   "version": "2.17.0",
-  "bugs": "https://github.com/elm-street-technology/recurring/issues",
+  "bugs": "https://github.com/pguelpa/recurring/issues",
   "contributors": [
     "Matt Lorey <mattlorey@gmail.com>",
     "C J Silverio <ceejceej@gmail.com> (http://ceejbot.github.io/)",
