@@ -672,7 +672,7 @@ describe('Invoices', () => {
 
     it('can issue an open amount refund for a specific amount against an invoice', function(done) {
       const refundableInvoice = _.find(this.invoices, invoice => _.get(invoice, 'a.refund'))
-      debug('invoice to refund', refundableInvoice)
+      debug('invoice to partially refund', refundableInvoice)
       const refundOptions = { amount_in_cents: 5 }
 
       const invoice = recurly.Invoice()
@@ -697,7 +697,7 @@ describe('Invoices', () => {
 
     it('can issue an open amount refund for the full amount against an invoice', function(done) {
       const refundableInvoice = _.findLast(this.invoices, invoice => _.get(invoice, 'a.refund'))
-      debug('invoice to refund', refundableInvoice)
+      debug('invoice to fully refund', refundableInvoice)
 
       const invoice = recurly.Invoice()
       invoice.id = refundableInvoice.id
@@ -714,7 +714,8 @@ describe('Invoices', () => {
         invoice.must.have.property('invoice_number')
         invoice.invoice_number.must.not.equal(refundableInvoice.invoice_number)
         invoice.total_in_cents.must.be.below(0)
-        invoice.total_in_cents.must.equal(refundableInvoice.total_in_cents * -1)
+        invoice.total_in_cents.must.be.above((refundableInvoice.total_in_cents + 1)* -1)
+        invoice.amount_remaining_in_cents.must.equal(0)
         done()
       })
     })
