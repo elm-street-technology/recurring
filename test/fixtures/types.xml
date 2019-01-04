@@ -7,6 +7,7 @@
 		<boolean_true type="boolean">true</boolean_true>
 		<boolean_false type="boolean">false</boolean_false>
 		<integer_value type="integer">2</integer_value>
+		<long_value type="integer">2648900274756320226</long_value>
 		<datetime_value type="datetime">2011-04-19T07:00:00Z</datetime_value>
 		<hash_value>
 			<one type="integer">1000</one>
@@ -19,6 +20,7 @@
 		<nil_value nil="nil"></nil_value>
 		<boolean_value type="boolean">true</boolean_value>
 		<integer_value type="integer">3</integer_value>
+		<long_value type="integer">2648900274756320228</long_value>
 		<datetime_value type="datetime">2012-10-16T08:00:00Z</datetime_value>
 		<hash_value>
 			<one type="integer">1000</one>
