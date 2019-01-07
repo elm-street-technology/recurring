@@ -71,6 +71,12 @@ describe('recurly xml parser', () => {
     item.integer_value.must.equal(3)
   })
 
+  it('handles long int values', () => {
+    const item = typesResult[1]
+    item.long_value.must.be.a.string()
+    item.long_value.must.equal('2648900274756320228')
+  })
+
   it('can parse nil types', () => {
     const item = typesResult[0]
     item.must.have.property('nil_value')

@@ -19,9 +19,23 @@ let plan
 let account
 let subscription
 let freshAccountId
+let sharedAccount
 
-before(() => {
+before(done => {
   recurly.setAPIKey(config.apikey)
+
+  const data = {
+    id: uuid.v4(),
+    email: 'kirk@example.com',
+    first_name: 'Kirk',
+    last_name: 'McLean',
+    company_name: 'Vancouver Canucks'
+  }
+  recurly.Account().create(data, (err, newAccount) => {
+    demand(err).not.exist()
+    sharedAccount = newAccount
+    done()
+  })
 })
 
 describe('Plan', () => {
@@ -191,6 +205,102 @@ describe('Account', () => {
       testAcc.fetch(err => {
         demand(err).not.exist()
         testAcc.company_name.must.equal(account.company_name)
+        done()
+      })
+    })
+  })
+})
+
+describe('ShippingAddress', () => {
+  const newAddressData = {
+    nickname: 'Happy Trees',
+    first_name: 'Robert',
+    last_name: 'Ross',
+    address1: 'P.O. Box 946',
+    address2: '',
+    city: 'Sterling',
+    state: 'VA',
+    zip: '20167',
+    country: 'US'
+  }
+
+  const updatedAddressData = {
+    nickname: 'Das Rock',
+    first_name: 'Dwayne',
+    address1: 'Iron Paradise Drive',
+    address2: 'Leg Press #2',
+    city: 'Hayward',
+    state: 'CA',
+    zip: '94540',
+    email: 'das-rock-ross@example.com'
+  }
+
+  it('can create a new shipping address for an account', done => {
+    const address = recurly.ShippingAddress()
+    address.account_code = sharedAccount.id
+
+    address.create(newAddressData, (err, newAddress) => {
+      demand(err).not.exist()
+      demand(newAddress.id).exist()
+
+      demand(newAddress.nickname).equal('Happy Trees')
+      demand(newAddress.first_name).equal('Robert')
+      demand(newAddress.last_name).equal('Ross')
+      demand(newAddress.address1).equal('P.O. Box 946')
+      demand(newAddress.address2).equal('')
+      demand(newAddress.city).equal('Sterling')
+      demand(newAddress.state).equal('VA')
+      demand(newAddress.zip).equal('20167')
+      demand(newAddress.country).equal('US')
+
+      done()
+    })
+  })
+
+  it('can update an existing shipping address for an account', done => {
+    let newAddressID
+    const address = recurly.ShippingAddress()
+    address.account_code = sharedAccount.id
+
+    address.create(newAddressData, (err, newAddress) => {
+      newAddressID = newAddress.id
+      demand(err).not.exist()
+
+      address.update(updatedAddressData, (err, updatedAddress) => {
+        demand(err).not.exist()
+        demand(updatedAddress.id).equal(newAddressID)
+
+        demand(updatedAddress.nickname).equal('Das Rock')
+        demand(updatedAddress.first_name).equal('Dwayne')
+        demand(updatedAddress.last_name).equal('Ross')
+        demand(updatedAddress.address1).equal('Iron Paradise Drive')
+        demand(updatedAddress.address2).equal('Leg Press #2')
+        demand(updatedAddress.city).equal('Hayward')
+        demand(updatedAddress.state).equal('CA')
+        demand(updatedAddress.zip).equal('94540')
+        demand(updatedAddress.country).equal('US')
+        demand(updatedAddress.email).equal('das-rock-ross@example.com')
+
+        done()
+      })
+    })
+  })
+
+  it('can fetch a list of account addresses as well as an individual address', done => {
+    sharedAccount.fetchShippingAddresses((err, results) => {
+      demand(err).not.exist()
+
+      // Test we can get all the addresses
+      demand(results.map(address => address.nickname).sort()).eql(['Das Rock', 'Happy Trees'])
+
+      // Test we can get a single address
+      const individualAddress = recurly.ShippingAddress()
+      individualAddress.account_code = results[0].account_code
+      individualAddress.id = results[0].id
+
+      individualAddress.fetch((err, address) => {
+        demand(err).not.exist()
+        demand(address.properties).eql(results[0].properties)
         done()
       })
     })
