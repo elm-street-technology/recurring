@@ -1,8 +1,8 @@
 {
-  "name": "@elm-street-technology/recurring",
+  "name": "@pguelpa/recurring",
   "description": "a recurly v2 api client for node.js",
-  "version": "2.8.1",
-  "bugs": "https://github.com/elm-street-technology/recurring/issues",
+  "version": "2.17.0",
+  "bugs": "https://github.com/pguelpa/recurring/issues",
   "contributors": [
     "Matt Lorey <mattlorey@gmail.com>",
     "C J Silverio <ceejceej@gmail.com> (http://ceejbot.github.io/)",
@@ -11,7 +11,8 @@
     "T J @surttour",
     "Peter Shugar",
     "Mark Garlanger @mgarlanger",
-    "Tom Kirkpatrick @mrfelton"
+    "Tom Kirkpatrick @mrfelton",
+    "Paul Guelpa @pguelpa"
   ],
   "dependencies": {
     "async-iterators": "0.2.2",

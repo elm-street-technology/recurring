@@ -654,7 +654,7 @@ describe('Invoices', () => {
 
   describe('refunds', () => {
     before(function(done) {
-      recurly.Invoice().all({state: 'collected'}, (err, invoices) => {
+      recurly.Invoice().all({state: 'paid'}, (err, invoices) => {
         demand(err).not.exist()
         this.invoices = invoices
         done()
@@ -672,7 +672,7 @@ describe('Invoices', () => {
 
     it('can issue an open amount refund for a specific amount against an invoice', function(done) {
       const refundableInvoice = _.find(this.invoices, invoice => _.get(invoice, 'a.refund'))
-      debug('invoice to refund', refundableInvoice)
+      debug('invoice to partially refund', refundableInvoice)
       const refundOptions = { amount_in_cents: 5 }
 
       const invoice = recurly.Invoice()
@@ -697,7 +697,7 @@ describe('Invoices', () => {
 
     it('can issue an open amount refund for the full amount against an invoice', function(done) {
       const refundableInvoice = _.findLast(this.invoices, invoice => _.get(invoice, 'a.refund'))
-      debug('invoice to refund', refundableInvoice)
+      debug('invoice to fully refund', refundableInvoice)
 
       const invoice = recurly.Invoice()
       invoice.id = refundableInvoice.id
@@ -714,7 +714,8 @@ describe('Invoices', () => {
         invoice.must.have.property('invoice_number')
         invoice.invoice_number.must.not.equal(refundableInvoice.invoice_number)
         invoice.total_in_cents.must.be.below(0)
-        invoice.total_in_cents.must.equal(refundableInvoice.total_in_cents * -1)
+        invoice.total_in_cents.must.be.above((refundableInvoice.total_in_cents + 1) * -1)
+        invoice.amount_remaining_in_cents.must.equal(0)
         done()
       })
     })
@@ -742,9 +743,9 @@ describe('Invoices', () => {
           if (err) return done(err)
 
           // create an invoice with the pending charges
-          account.createInvoice((err, invoice) => {
+          account.createInvoice((err, invoices) => {
             if (err) return done(err)
-            this.invoiceToMarkAsFailed = invoice
+            this.invoiceToMarkAsFailed = invoices.charge_invoice
             done()
           })
         })
@@ -757,7 +758,7 @@ describe('Invoices', () => {
 
       invoice.markFailed(err => {
         demand(err).not.exist()
-        invoice.state.must.equal('failed')
+        invoice.charge_invoice.state.must.equal('failed')
         done()
       })
     })
@@ -946,7 +947,7 @@ describe('Purchase', () => {
 
     data = {
       currency: 'USD',
-      subscriptions: [subscription1],
+      subscriptions: [{ subscription: subscription1 }],
       account: {
         account_code: accountCode,
         billing_info: {

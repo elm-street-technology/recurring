@@ -1,6 +1,6 @@
 A node client for [recurly](https://recurly.com)'s v2 api, with support for secure parameter signing for [recurly.js](https://docs.recurly.com/recurlyjs) embedded forms.
 
-[![on npm](http://img.shields.io/npm/v/recurring.svg?style=flat)](https://www.npmjs.org/package/recurring)  [![Tests](http://img.shields.io/travis/ceejbot/recurring.svg?style=flat)](http://travis-ci.org/ceejbot/recurring)  [![Dependencies](http://img.shields.io/david/ceejbot/recurring.svg?style=flat)](https://david-dm.org/ceejbot/recurring)  ![io.js supported](https://img.shields.io/badge/io.js-supported-green.svg?style=flat)  
+[![on npm](http://img.shields.io/npm/v/@pguelpa/recurring.svg?style=flat)](https://www.npmjs.org/package/@pguelpa/recurring)  [![Tests](http://img.shields.io/travis/pguelpa/recurring.svg?style=flat)](http://travis-ci.org/pguelpa/recurring)  [![Dependencies](http://img.shields.io/david/pguelpa/recurring.svg?style=flat)](https://david-dm.org/pguelpa/recurring)  ![io.js supported](https://img.shields.io/badge/io.js-supported-green.svg?style=flat)
 
 __This code is still in development.__ We do not have complete coverage of the API yet.
 
@@ -10,7 +10,9 @@ The following versions of the recurring package are currently supported:
 
 | Recurly API version  | NPM dist-tag          | Git development branch
 | -------------------- | --------------------- | -----------------------
-| 2.7                  | recurly-v2.7 (latest) | 2.7 (master)
+| 2.17                 | recurly-v2.17 (latest)| 2.17 (master)
+| 2.8                  | recurly-v2.8          | 2.8
+| 2.7                  | recurly-v2.7          | 2.7
 | 2.3                  | recurly-v2.3          | 2.3
 
 # Recurly API
