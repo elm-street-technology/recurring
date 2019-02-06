@@ -2,6 +2,7 @@
 
 const demand = require('must')
 const Recurring = require('../lib/recurly')
+const RecurlyError = require('../lib/recurly-error')
 const uuid = require('uuid')
 const debug = require('debug')('recurring:test')
 const _ = require('lodash')
@@ -877,6 +878,11 @@ describe('Invoices', () => {
 
 describe('RecurlyError', () => {
   describe('General errors', () => {
+    it('handles plain server errors', () => {
+      const err = new RecurlyError('Internal server error')
+      err.message.must.equal('Internal server error')
+    })
+
     it('handles a general error', done => {
       const account = recurly.Account()
       account.id = 'some-invalid-id'
